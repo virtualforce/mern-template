@@ -5,6 +5,12 @@ import { PropTypes } from "prop-types";
 import TextField from "../../../components/UI/FormElements/TextField";
 import { loginUser } from "../../../store/actions/authActions";
 import Error from "../../../components/Common/Error";
+import OAuth from "../OAuth/OAuth";
+
+import io from "socket.io-client";
+const socket = io("http://localhost:5000");
+
+const providers = ["google", "facebook"];
 
 class Login extends Component {
   state = {
@@ -35,6 +41,10 @@ class Login extends Component {
   render() {
     const { errors } = this.state;
 
+    const socialBtns = providers.map(provider => (
+      <OAuth provider={provider} key={provider} socket={socket} />
+    ));
+
     return (
       <div className="row justify-content-center">
         <div className="col-6">
@@ -59,18 +69,7 @@ class Login extends Component {
             <button className="btn btn-lg btn-primary btn-block" type="submit">
               Login
             </button>
-            <a
-              className="btn btn-lg btn-primary btn-block"
-              href="http://localhost:5000/api/auth/facebook"
-            >
-              Login With FB
-            </a>
-            <a
-              className="btn btn-lg btn-primary btn-block"
-              href="/api/auth/google"
-            >
-              Login With Google
-            </a>
+            {socialBtns}
           </form>
         </div>
       </div>

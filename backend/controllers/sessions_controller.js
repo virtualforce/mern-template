@@ -15,7 +15,12 @@ exports.create = (req, res) => {
     }
     bcrypt.compare(req.body.password, user.password).then(matched => {
       if (matched) {
-        CommonController.generateBearer(user, res, "Logged in successfully!");
+        CommonController.generateBearer(
+          user,
+          res,
+          req,
+          "Logged in successfully!"
+        );
       } else {
         res.status(400).json({ message: invalidLogin });
       }

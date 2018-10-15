@@ -4,6 +4,11 @@ const passport = require("passport");
 
 const OmniauthController = require("../../controllers/omniauth_controller");
 
+const addSocketIdtoSession = (req, res, next) => {
+  req.session.socketId = req.query.socketId;
+  next();
+};
+
 // @route   GET /api/auth/facebook
 // @desc    Load Facebook Consent Screen
 router.get("/facebook", passport.authenticate("facebook"));
@@ -23,6 +28,7 @@ router.get(
 // @desc    Load Google Consent Screen
 router.get(
   "/google",
+  addSocketIdtoSession,
   passport.authenticate("google", {
     scope: ["profile", "email"]
   })

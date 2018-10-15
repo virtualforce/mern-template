@@ -3,6 +3,10 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const path = require("path");
+const cors = require("cors");
+const socketio = require("socket.io");
+const http = require("http");
+const session = require("express-session");
 
 const dbUrl = require("./config/keys").mongoDbUrl;
 const userRoutes = require("./routes/api/users");
@@ -18,6 +22,21 @@ mongoose
 
 const app = express();
 
+app.use(
+  session({
+    secret: "my_Sect",
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
+app.use(
+  cors({
+    origin: ["http://127.0.0.1:3000", "http://localhost:3000"],
+    credentials: true
+  })
+);
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -25,6 +44,10 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 require("./config/facebook_strategy")(passport);
 require("./config/google_strategy")(passport);
+
+let server = http.createServer(app);
+const io = socketio(server);
+app.set("io", io);
 
 app.use("/api/users", userRoutes);
 app.use("/api/auth", oauthRoutes);
@@ -38,4 +61,4 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-module.exports = app;
+module.exports = server;

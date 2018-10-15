@@ -50,5 +50,11 @@ exports.createUserFromOAuth = (accessToken, refreshToken, profile, done) => {
 };
 
 exports.authenticateUserFromOAuth = (req, res) => {
-  CommonController.generateBearer(req.user, res, "Logged in successfully!");
+  CommonController.generateBearer(
+    req.user,
+    res,
+    req,
+    "Logged in successfully!",
+    true
+  );
 };

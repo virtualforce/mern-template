@@ -28,6 +28,7 @@ exports.create = (req, res) => {
           CommonController.generateBearer(
             createdUser,
             res,
+            req,
             "Signed up successfully!"
           )
         )

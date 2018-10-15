@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const secretToken = require("../config/keys").jwtSecretToken;
 
-exports.generateBearer = (user, res, message) => {
+exports.generateBearer = (user, res, req, message, omniauth = false) => {
   const payload = {
     id: user.id,
     email: user.email,
@@ -11,9 +11,15 @@ exports.generateBearer = (user, res, message) => {
   };
   jwt.sign(payload, secretToken, { expiresIn: 3600 }, (error, token) => {
     if (error) throw error;
-    res.json({
-      message: message,
-      token: `Bearer ${token}`
-    });
+    if (omniauth === true) {
+      const io = req.app.get("io");
+      io.in(req.session.socketId).emit("google", token);
+      res.end();
+    } else {
+      res.json({
+        message: message,
+        token: `Bearer ${token}`
+      });
+    }
   });
 };
