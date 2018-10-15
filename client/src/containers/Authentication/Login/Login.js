@@ -59,6 +59,18 @@ class Login extends Component {
             <button className="btn btn-lg btn-primary btn-block" type="submit">
               Login
             </button>
+            <a
+              className="btn btn-lg btn-primary btn-block"
+              href="http://localhost:5000/api/auth/facebook"
+            >
+              Login With FB
+            </a>
+            <a
+              className="btn btn-lg btn-primary btn-block"
+              href="/api/auth/google"
+            >
+              Login With Google
+            </a>
           </form>
         </div>
       </div>

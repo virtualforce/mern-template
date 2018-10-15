@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const secretToken = require("../config/keys").jwtSecretToken;
 
-module.exports = generateBearer = (user, res, message) => {
+exports.generateBearer = (user, res, message) => {
   const payload = {
     id: user.id,
     email: user.email,

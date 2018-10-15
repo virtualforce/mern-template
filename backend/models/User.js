@@ -6,6 +6,8 @@ const userSchema = new Schema({
   lastName: { type: String },
   email: { type: String, required: true },
   password: { type: String, required: true },
+  uuid: { type: String },
+  provider: { type: String },
   createdAt: { type: Date, default: Date.now }
 });
 

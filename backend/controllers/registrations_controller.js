@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 
 const User = require("../models/User");
 const validateSignup = require("../validations/signup");
-const generateBearer = require("./common_controller");
+const CommonController = require("./common_controller");
 
 exports.create = (req, res) => {
   const { errors, isValid } = validateSignup(req.body);
@@ -25,7 +25,11 @@ exports.create = (req, res) => {
       newUser
         .save()
         .then(createdUser =>
-          generateBearer(createdUser, res, "Signed up successfully!")
+          CommonController.generateBearer(
+            createdUser,
+            res,
+            "Signed up successfully!"
+          )
         )
         .catch(err => res.status(400).json(err));
     });

@@ -6,6 +6,7 @@ const path = require("path");
 
 const dbUrl = require("./config/keys").mongoDbUrl;
 const userRoutes = require("./routes/api/users");
+const oauthRoutes = require("./routes/api/oauth");
 
 mongoose
   .connect(
@@ -22,8 +23,11 @@ app.use(bodyParser.json());
 
 app.use(passport.initialize());
 require("./config/passport")(passport);
+require("./config/facebook_strategy")(passport);
+require("./config/google_strategy")(passport);
 
 app.use("/api/users", userRoutes);
+app.use("/api/auth", oauthRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

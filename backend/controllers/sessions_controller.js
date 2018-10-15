@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 
 const validateLogin = require("../validations/login");
-const generateBearer = require("./common_controller");
+const CommonController = require("./common_controller");
 
 exports.create = (req, res) => {
   let invalidLogin = "Invalid Email or Password!";
@@ -15,7 +15,7 @@ exports.create = (req, res) => {
     }
     bcrypt.compare(req.body.password, user.password).then(matched => {
       if (matched) {
-        generateBearer(user, res, "Logged in successfully!");
+        CommonController.generateBearer(user, res, "Logged in successfully!");
       } else {
         res.status(400).json({ message: invalidLogin });
       }
